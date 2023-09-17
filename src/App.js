@@ -193,9 +193,10 @@ function App() {
         }
       }
       // good to go for checking .
-      if (value === "." && !localCurrentValue.includes(".")) {
-        localCurrentValue += value;
-      }
+        if (value === "." && !localCurrentValue.toString().includes(".")) {
+          localCurrentValue += value;
+        }
+
     }
 
 
@@ -256,11 +257,11 @@ function App() {
     // error handling when people use mutiple by 0 resulting in 0 the next input become 0232 for example
     // check the first 2 character if it is 00 and replace it with 0
     try {
-      let first2char = localCurrentValue.slice(0, 2);
+      let first2char = localCurrentValue.toString().slice(0, 2);
       if (first2char === "00" || first2char === "01" || first2char === "02" || first2char === "03"
         || first2char === "04" || first2char === "05" || first2char === "06" || first2char === "07"
         || first2char === "08" || first2char === "09") {
-        localCurrentValue = localCurrentValue.slice(1);
+        localCurrentValue = localCurrentValue.toString().slice(1);
       }
     } catch (error) {
       console.log(error);
