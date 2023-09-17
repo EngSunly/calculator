@@ -141,6 +141,9 @@ function App() {
         calculatorlogic(value);
       }
       if (value === "Enter") {
+        if (Formula === "") {
+          return;
+        }
         calculatorlogic("=");
       }
       if (value === "Backspace" || value === "Delete" || value === "A" || value === "a" || value === "c" || value === "C") {
