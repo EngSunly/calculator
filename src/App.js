@@ -277,6 +277,9 @@ function App() {
 
 
     if (value === "=") {
+      if (localFormula === "") {
+        return;
+      }
       localFormula += localCurrentValue;
       localCurrentValue = eval(localFormula);
       localFormula = "";
