@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 
 const buttons = [
   {
@@ -116,12 +116,45 @@ const buttons = [
 ]
 
 
-function App() {
-  const [Currentvalue, setCurrentValue] = useState("0");
-  const [Formula, setFormula] = useState("");
 
-  const handleClick = (e) => {
+
+
+
+
+function App() {
+    const [Currentvalue, setCurrentValue] = useState("0");
+    const [Formula, setFormula] = useState("");
+
+    useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown,false);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    });
+    function handleKeyDown(e) {
+      let value = e.key;
+      // all possible value of each key in one if statement
+      if (value === "0" || value === "1" || value === "2" || value === "3" || value === "4" || 
+      value === "5" || value === "6" || value === "7" || value === "8" || value === "9" ||
+       value === "+" || value === "-" || value === "*" || value === "/" || value === "=" ||
+       value === ".") {
+        calculatorlogic(value);
+      }
+      if (value === "Enter") {
+        calculatorlogic("=");
+      }
+      if (value === "Backspace" || value === "Delete" || value === "A" || value === "a" || value === "c" || value === "C") {
+        calculatorlogic("AC");
+      }
+    }
+
+
+    
+    function handleClick(e) {
     let value = e.target.value;
+    calculatorlogic(value);
+    }
+    function calculatorlogic(value){
     let localFormula = Formula;
     let localCurrentValue = Currentvalue;
     // checking double operand and replacing it with the new one for + * /
@@ -161,8 +194,6 @@ function App() {
         localCurrentValue += value;
       }
     }
-
-
 
 
 
@@ -242,23 +273,23 @@ function App() {
 
 
 
-  if (value === "=") {
-    localFormula += localCurrentValue;
-    localCurrentValue = eval(localFormula);
-    localFormula = "";
+    if (value === "=") {
+      localFormula += localCurrentValue;
+      localCurrentValue = eval(localFormula);
+      localFormula = "";
+    }
+    // good to go for checking AC
+    if (value === "AC") {
+      setCurrentValue("0");
+      setFormula("");
+      return;
+    }
+
+
+    setCurrentValue(localCurrentValue);
+    setFormula(localFormula);
+
   }
-  // good to go for checking AC
-  if (value === "AC") {
-    setCurrentValue("0");
-    setFormula("");
-    return;
-  }
-
-
-  setCurrentValue(localCurrentValue);
-  setFormula(localFormula);
-
-}
 
 
 
@@ -266,31 +297,31 @@ function App() {
 
 
 
-return (
-  <div className="App">
-    <h1>Calculator</h1>
-    <div className="calculator">
-      <h2 className="display">Formula</h2>
-      <h2 className="display">{Formula}</h2>
-      <h2 className="display">Current</h2>
-      <h2 className="display" id="display">{Currentvalue}</h2>
-      <div className="buttons">
-        {buttons.map((button) => (
-          <button
-            onClick={handleClick}
-            className="button"
-            key={button.id}
-            id={button.id}
-            value={button.value}
-            style={{ background: button.background, color: button.color }}
-          >
-            {button.value}
-          </button>
-        ))}
+    return (
+      <div className="App">
+        <h1>Calculator</h1>
+        <div className="calculator">
+          <h2 className="display">Formula</h2>
+          <h2 className="display">{Formula}</h2>
+          <h2 className="display">Current</h2>
+          <h2 className="display" id="display">{Currentvalue}</h2>
+          <div className="buttons">
+            {buttons.map((button) => (
+              <button
+                onClick={handleClick}
+                className="button"
+                key={button.id}
+                id={button.id}
+                value={button.value}
+                style={{ background: button.background, color: button.color }}
+              >
+                {button.value}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
-}
+    );
+  }
 
 export default App;
